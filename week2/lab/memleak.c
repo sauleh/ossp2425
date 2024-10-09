@@ -8,7 +8,8 @@ int main()
     for(int i=0; i<10000000; i++)
     {
         pch = malloc(1000000);
-        Sleep(500);
+        Sleep(100);
+        free(pch);
     }
     return 0;
 }

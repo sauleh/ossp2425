@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 int slen(char* pch)
 {
@@ -22,14 +23,32 @@ void reverse(char* pch)
         swap(pch, i, len-1-i);
 }
 
+void make_reverse_copy(char* pch, char* buf)
+{
+    for(int i=0; i<100; i++)
+        buf[i] = pch[i];
+    reverse(buf);
+}
+
+char* make_reverse_copy_dynamic(char* pch)
+{
+    int len = slen(pch);
+    char* buf = malloc(sizeof(char) * (len+1));
+    for(int i=0; i<len; i++)
+        buf[i] = pch[i];
+    buf[len] = 0;
+    reverse(buf);
+    return buf; 
+}
+
 int main()
 {
     char buf[100];// = "1234567890";
+    // char rev_buf[100];
     scanf("%s", buf);
-    reverse(buf);
-    printf("%s\n", buf);
-
-    // char* buf1, buf2;
-
+    // reverse(buf);
+    char* rev_buf = make_reverse_copy_dynamic(buf);
+    printf("original: %s\nreverse: %s", buf, rev_buf);
+    free(rev_buf);
     return 0;
 }
