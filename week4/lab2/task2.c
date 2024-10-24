@@ -7,13 +7,15 @@
 #define RESET "\033[0m"
 
 
-#define sleeptime 50
+#define sleeptime 1
 
 void* print1(void* arg) {
     int i=0;
     while (i<10) {
-        printf("A:%d\n" , i);
+        printf(COLOR1);
+        printf("PINK:%d\n" , i);
         usleep(sleeptime); 
+        printf(RESET);
         i++;
     }
     return NULL;
@@ -22,8 +24,10 @@ void* print1(void* arg) {
 void* print2(void* arg) {
     int i=0;
     while (i<10) {
-        printf("B:%d\n" , i);
+        printf(COLOR2);
+        printf("GREEN:%d\n" , i);
         usleep(sleeptime); 
+        printf(RESET);
         i++;
     }
     return NULL;
