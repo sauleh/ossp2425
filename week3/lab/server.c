@@ -1,5 +1,8 @@
-#include<stdio.h>
-#include"server_helper.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include "server_helper.h"
 
 int main(int argc, char** argv)
 {
@@ -10,10 +13,15 @@ int main(int argc, char** argv)
         print_usage();
         return 1;
     }
-    if (cmd.is_interactive)
-        run_interactive();
-    else
-        run_server();
+
+    int inHandle = STDIN_FILENO, outHandle = STDOUT_FILENO, server_fd = -1, new_socket = -1;
+    if (!cmd.is_interactive)
+    {
+        get_socket_handles(&server_fd, &new_socket, &cmd);
+        inHandle = outHandle = new_socket;
+    }
+
+    run_server(inHandle, outHandle);
 
     return 0;
 }

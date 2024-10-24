@@ -4,14 +4,14 @@
 
 int n = 0;
 
-void do_one_thing()
+void t1()
 {
 	for (int i = 0; i < 100000; i++) {
 		n++;
 	}
 }
 
-void do_another_thing()
+void t2()
 {
 	for (int i = 0; i < 100000; i++) {
 		n--;
@@ -25,12 +25,12 @@ int main(void)
 
 	pthread_create(&thread1,
 		NULL,
-		(void *)do_one_thing,
+		(void *)t1,
 		NULL);
 
 	pthread_create(&thread2,
 		NULL,
-		(void *)do_another_thing,
+		(void *)t2,
 		NULL);
 
 	pthread_join(thread1, NULL);

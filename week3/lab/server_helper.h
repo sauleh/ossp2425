@@ -1,10 +1,12 @@
 #include<stdio.h>
 #include<stdbool.h>
 #include<string.h>
+#include <arpa/inet.h>
 
 typedef struct _CmdArg
 {
     bool is_interactive; 
+    int server_port;
 } CmdArg;
 
 typedef struct _Rule
@@ -32,56 +34,77 @@ bool process_args(int argc, char** argv, CmdArg* pCmd)
     return true;
 }
 
-void run_interactive()
+void get_socket_handles(int* server_fd, int* new_socket, CmdArg* cmd)
 {
-    printf("running interactive mode\n");
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
+    *server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(cmd->server_port);
+    bind(*server_fd, (struct sockaddr *)&address, sizeof(address));
+    listen(*server_fd, 3);
+    *new_socket = accept(*server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 }
 
 void parse_rule(char* pchRule, Rule* rule)
 {}
 
-// TODO update function signatures and also implement
-void process_add_rule(char* pch){}
-void process_delete_rule(char* pch){}
-void process_rule_list(char* pch){}
-void process_requests_list(char* pch){}
-void process_rule_check(char* pch){}
-
-void  run_server()
+char* make_str(const char* pch)
 {
-    char line[256];
+    int memSize = strlen(pch) + 1;
+    char* pchR = malloc(memSize);
+    for(int i=0; i<memSize; i++)
+        pchR[i] = pch[i];
+    return pchR;                
+}
+
+// TODO update function signatures and also implement
+char* process_add_rule(char* pch, Rule* pRuleHead){}
+char* process_delete_rule(char* pch, Rule* pRuleHead){}
+char* process_rule_list(char* pch, Rule* pRuleHead){}
+char* process_requests_list(char* pch, Request* pRequestHead){}
+char* process_rule_check(char* pch, Rule* pRuleHead){}
+
+void  run_server(int inHandle, int outHandle)
+{
+    char line[1024];
     Rule* pRuleHead = NULL;
     Request* pRequestHead = NULL;
     while(true)
     {
         // TODO update pRequestHead
-        fgets(line, 256, stdin);
+        int len = read(inHandle, line, 1024);
+        char* response = NULL;
         switch (line[0])
         {
         case 'A':
-            process_add_rule(line, pRuleHead);
+            response = process_add_rule(line, pRuleHead);
             break;
         
         case 'D':
-            process_delete_rule(line, pRuleHead);
+            response = process_delete_rule(line, pRuleHead);
             break;
         
         case 'L':
-            process_rule_list(line, pRuleHead);
+            response = process_rule_list(line, pRuleHead);
             break;
         
         case 'R':
-            process_requests_list(line, pRequestHead);
+            response = process_requests_list(line, pRequestHead);
             break;
         
         case 'C':
-            process_rule_check(line, pRuleHead);
+            response = process_rule_check(line, pRuleHead);
             break;
         
         default:
-            printf("Illegal request");
+            response = make_str("Illegal Request");
             break;
         }
+        write(outHandle, response, strlen(response));
+        free(response);
+        response = NULL;
     }
 }
 

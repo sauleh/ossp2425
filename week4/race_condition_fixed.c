@@ -5,7 +5,7 @@
 volatile int n = 0;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
-void do_one_thing()
+void t1()
 {
 	for (int i = 0; i < 100000; i++) {
 		pthread_mutex_lock(&mutex1);
@@ -14,7 +14,7 @@ void do_one_thing()
 	}
 }
 
-void do_another_thing()
+void t2()
 {
 	for (int i = 0; i < 100000; i++) {
 		pthread_mutex_lock(&mutex1);
@@ -30,12 +30,12 @@ int main(void)
 
 	pthread_create(&thread1,
 		NULL,
-		(void *)do_one_thing,
+		(void *)t1,
 		NULL);
 
 	pthread_create(&thread2,
 		NULL,
-		(void *)do_another_thing,
+		(void *)t2,
 		NULL);
 
 	pthread_join(thread1, NULL);
