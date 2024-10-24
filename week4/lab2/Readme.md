@@ -26,19 +26,19 @@
 
 # sockets
 
-# task1
+# task4
 * create an uppercase server
 server -i
 input> sample sentence
 output> SAMPLE SENTENCE
 
-# task2
+# task5
 server <port>
 <waiting>
 client <ip> <port>
 input> sample sentence   
 output> SAMPLE SENTENCE
 
-# task3 (if time permits)
+# task7 (if time permits)
 use mostly the same code path in server for (-i) vs (port)
 use read/write with socket or STDIN_FILENO/STDOUT_FILENO

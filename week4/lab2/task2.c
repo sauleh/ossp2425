@@ -6,29 +6,36 @@
 #define COLOR2 "\033[1;32m" 
 #define RESET "\033[0m"
 
+int i = 0;
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 #define sleeptime 1
 
 void* print1(void* arg) {
-    int i=0;
+    i=0;
     while (i<10) {
+        pthread_mutex_lock(&mutex);
         printf(COLOR1);
         printf("PINK:%d\n" , i);
         usleep(sleeptime); 
         printf(RESET);
         i++;
+        pthread_mutex_unlock(&mutex);
     }
     return NULL;
 }
 
 void* print2(void* arg) {
-    int i=0;
+    i=0;
     while (i<10) {
+        pthread_mutex_lock(&mutex);
         printf(COLOR2);
         printf("GREEN:%d\n" , i);
         usleep(sleeptime); 
         printf(RESET);
         i++;
+        pthread_mutex_unlock(&mutex);
     }
     return NULL;
 }
