@@ -20,6 +20,10 @@
 * create a deadlock 
 * fix it with using pthread_mutex_trylock
 
+## task 4 (if time permits)
+* give the color of a thread as an input parameter to the thread
+* return the number of lines printed as an output paramter received by thread_join
+
 # sockets
 
 # task1
