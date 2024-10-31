@@ -40,3 +40,20 @@ https://elixir.bootlin.com/linux/v6.11.5/source
 - Find out what other system call are there
 - Try to see if you can make another system call
 
+## observe system calls made by a program
+On Linux
+- use "strace ls" to see the system calls made by the "ls" program
+    1. Try to identify which system call "ls" is using to inquire about the files in the current folder.
+    2. Try to identify the system call that "ls" is using to write the result to the terminal.
+    
+On Windows
+- Use "procmon" from the System Internal tools available from Microsoft to observe activies related to a "notepad" process. 
+    1. open procmon and add "image path" contains "notepad.exe" to its filter list.
+    2. Start capturing events
+    3. run notepad.exe
+    4. Observe and inspect the events happening. Try to identify some of the system calls.
+    5. Clear the events.
+    6. Open a sample text file. Notice what new events happen and which one corresponds to the file you opened.
+    7. Clear the events.
+    8. Modify the file and save it.
+    9. Inspect the new events and identify which system call is related to saving the file to the disk.
